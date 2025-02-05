@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions et Indices</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            height: 100vh;
+        }
+        #header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+        #counter {
+            color: lightgray;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .question {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .hint {
+            display: none;
+            margin-top: 10px;
+            font-weight: bold;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>TP WebScrapping</h1>
+        <div id="counter" style="position: fixed; top: 10px; right: 10px; color: lightgrey; padding: 10px; border-radius: 5px;">0</div>
+    </div>
+    
+    <div class="question">
+        <p>Q1 - Créez un environement python à l'aide de conda ou pyenv</p>
+        <button onclick="showHint(this, 'q1-hint1', null)">Exemple de solution</button>
+        <pre id="q1-hint1" class="hint"><code class="language-bash">conda create -n tpWebScrapping python</code></pre>
+    </div>
+    
+    <div class="question">
+        <p>Q2 - Installez playwright dans votre environement, puis installer les navigateurs de playwright : <a target="_blank" href="https://playwright.dev/python/docs/intro">doc</a></p>
+        <button onclick="showHint(this, 'q2-hint1', null)">Exemple de solution</button>
+        <pre id="q2-hint1" class="hint"><code class="language-bash">conda activate tpWebScrapping
+pip install pytest-playwright
+playwright install</code></pre>
+    </div>
+    
+    <div class="question">
+        <p>Q3 - Créez un fichier python et accedez à la page d'accueil de youtube</p>
+        
+        <button onclick="showHint(this, 'q3-hint1', 'q3-hint2-btn')">Afficher un indice</button>
+        <pre id="q3-hint1" class="hint"><a target="_blank" href="https://playwright.dev/python/docs/api/class-page">Playwright Page</a></pre>
+        
+        <button id="q3-hint2-btn" class="hidden" onclick="showHint(this, 'q3-hint2', null)">Exemple de solution</button>
+        <pre id="q3-hint2" class="hint"><code class="language-python">from playwright.sync_api import Page, expect, sync_playwright
+
+url = 'https://www.youtube.com/watch?v=8hK732DrDU8'
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+    page.goto(url)
+    input('press enter')</code></pre>
+    </div>
+
+    <div class="question">
+        <p>Q4 - Ajouter une étape pour cliquer sur le bouton de consentement aux conditions d'utilisation</p>
+        
+        <button onclick="showHint(this, 'q4-hint1', 'q4-hint2-btn')">Afficher un indice</button>
+        <pre id="q4-hint1" class="hint">Vous pouvez utilisez f12 pour trouver le css selector (clic droit sur un element html -> copy -> selector)</pre>
+        
+        <button id= "q4-hint2-btn" class="hidden" onclick="showHint(this, 'q4-hint2', 'q4-hint3-btn')">Afficher un indice</button>
+        <pre id="q4-hint2" class="hint"><a target="_blank" href="https://playwright.dev/python/docs/api/class-page#page-wait-for-selector">Page.wait_for_selector()</a>
+<a href="https://playwright.dev/python/docs/api/class-page#page-click" target="_blank">Page.click()</a>
+        </pre>
+        
+        <button id='q4-hint3-btn' class="hidden" onclick="showHint(this, 'q4-hint3')">Exemple de solution</button>
+        <pre id="q4-hint3" class="hint"><code class="language-python">consentCss = 'ytd-button-renderer.ytd-consent-bump-v2-lightbox:nth-child(2) > yt-button-shape:nth-child(1) > button:nth-child(1)'
+page.wait_for_selector(consentCss)
+page.click(consentCss)
+input('press enter')</code></pre>
+    </div>
+
+    <div class="question">
+        <p>Q5 - Ajouter une boucle qui scroll un certain nombre de fois</p>
+        
+        <button onclick="showHint(this, 'q5-hint1', 'q5-hint2-btn')">Afficher un indice</button>
+        <pre id="q5-hint1" class="hint"><a target="_blank" href="https://playwright.dev/docs/api/class-keyboard">Page.keyboard</a></pre>
+        
+        <button id="q5-hint2-btn" class="hidden" onclick="showHint(this, 'q5-hint2', null)">Exemple de solution</button>
+        <pre id="q5-hint2" class="hint"><code class="language-python">for i in range(nScrolls):
+    page.keyboard.press('PageDown')
+    page.wait_for_timeout(1000)
+    input('press enter')</code></pre>
+    </div>
+
+    <div class="question">
+        <p>Q5-bis - Ajouter une fin à la boucle si la fin de la page est atteinte</p>
+        <button onclick="showHint(this, 'q5b-hint1', null)">Exemple de solution</button>
+        <pre id="q5b-hint1" class="hint"><code class="language-python">height = page.evaluate('document.documentElement.scrollHeight')</code></pre>
+    </div>
+
+    <div class="question">
+        <p>Q6 - Récupérer les commentaires</p>
+        <button onclick="showHint(this, 'q6-hint1', null)">Exemple de solution</button>
+        <pre id="q6-hint1" class="hint"><code class="language-python">comments = page.query_selector_all('#content-text > span')</code></pre>
+    </div>
+
+    <div class="question">
+        <p>Q7 - Enregistrer les commentaires dans un fichier au format de votre choix, pour future analyse</p>
+    </div>
+
+    <div class="question">
+        <p>Q8 - Restructer le code en une classe, avec des méthodes pour les étapes importante et une methode principale qui prend une url en argument</p>
+        <button onclick="showHint(this, 'q8-hint1', null)">Exemple de solution</button>
+        <pre id="q8-hint1" class="hint"><code class="language-python">class YoutubeScraper:
+    def __init__(self, limitScrolls: int = None, headless: bool = False) -> None:
+        pass
+        
+    def click_consent(self, page: Page) -> None:
+        pass
+    
+    def scroll(self, page: Page) -> None:
+        pass
+
+    def get_comments(self, page: Page) -> list:
+        pass
+    
+    def scrape(self, url: str) -> list:
+        pass</code></pre>
+    </div>
+
+    <div class="question">
+        <p>Q8-bis : Ajouter des commentaires pour expliquer le code</p>
+        <button onclick="showHint(this, 'q8b-hint1', null)">Exemple de solution</button>
+        <pre id="q8b-hint1" class="hint"><a target="_blank" href="https://www.python.org/dev/peps/pep-0257/">doc python</a></pre>
+    </div>
+
+    <div class="question">
+        <p>Q9 - Faites de votre classe un paquet importable</p>
+        <button onclick="showHint(this, 'q9-hint1', null)">Afficher un indice</button>
+        <pre id="q9-hint1" class="hint"><a target="_blank" href="https://docs.python.org/fr/3.13/reference/import.html">doc python</a></pre>
+    </div>
+
+    <div class="question">
+        <p>Q10 - Importer votre classe depuis un autre fichier et l'utiliser</p>
+    </div>
+
+    <script>
+        let score = 0;
+        function showHint(button, hintId, nextButtonId) {
+            document.getElementById(hintId).style.display = "block";
+            button.style.display = "none";
+            score += 1;
+            document.getElementById("counter").textContent = score;
+            Prism.highlightAll();
+            
+            if (nextButtonId) {
+                document.getElementById(nextButtonId).classList.remove("hidden");
+            }
+        }
+
+        window.onload = function() {
+            Prism.highlightAll();
+        };
+    </script>
+</body>
+</html>
